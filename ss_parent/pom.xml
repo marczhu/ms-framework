@@ -28,7 +28,7 @@
         <maven.surefire.plugin>2.8.1</maven.surefire.plugin>
         <maven.jar.plugin>2.4</maven.jar.plugin>
     </properties>
-
+    <!--
     <repositories>
         <repository>
             <snapshots>
@@ -75,7 +75,9 @@
             <url>http://10.135.6.66:8081/artifactory/plugins-snapshot</url>
         </pluginRepository>
     </pluginRepositories>
+    -->
     <!-- distribution -->
+    <!--
     <distributionManagement>
         <repository>
             <id>libs-release-local</id>
@@ -88,7 +90,7 @@
             <url>http://10.128.3.60:8081/artifactory/libs-snapshot-local</url>
         </snapshotRepository>
     </distributionManagement>
-
+    -->
     <dependencies>
         <!-- slf4j -->
         <dependency>
@@ -292,11 +294,5 @@
                 -->
             </plugins>
         </pluginManagement>
-        <!--
-            TODO add necessary plugins for each projec
-        -->
-        <plugins>
-
-        </plugins>
     </build>
 </project>
