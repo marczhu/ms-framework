@@ -20,5 +20,8 @@
         <module>ss_admin</module>
         <module>ss_quickstart</module>
     </modules>
+    <!--
+       from mac
 
+    -->
 </project>
