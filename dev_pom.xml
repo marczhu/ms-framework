@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.ss.scf</groupId>
+        <artifactId>ss_parent</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>ss_parent</relativePath>
+    </parent>
+
+    <artifactId>ss_framework</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <name>simple and smart development framework</name>
+
+    <modules>
+        <module>ss_parent</module>
+        <module>ss_admin</module>
+        <module>ss_quickstart</module>
+    </modules>
+    <!--
+        master and dev 2015-10-23 15:36
+        2015-10-23 16:27
+    -->
+</project>
