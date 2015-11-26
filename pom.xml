@@ -4,24 +4,21 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>com.ss.scf</groupId>
-        <artifactId>ss_parent</artifactId>
+        <groupId>com.ms.framework</groupId>
+        <artifactId>ms_parent</artifactId>
         <version>1.0-SNAPSHOT</version>
-        <relativePath>ss_parent</relativePath>
+        <relativePath>./ms_parent/pom.xml</relativePath>
     </parent>
 
-    <artifactId>ss_framework</artifactId>
+    <artifactId>ms_framework</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
-    <name>simple and smart development framework</name>
+    <name>micro 、simple、 smart development framework</name>
 
     <modules>
-        <module>ss_parent</module>
-        <module>ss_admin</module>
-        <module>ss_quickstart</module>
+        <module>ms_parent</module>
+        <module>ms_admin</module>
+        <module>ms_web</module>
     </modules>
-    <!--
-        master and dev 2015-10-23 15:36
-        2015-10-23 16:27
-    -->
+
 </project>
