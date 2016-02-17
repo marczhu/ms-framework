@@ -111,7 +111,7 @@ git clone git@github.com:markzhu/ms_framework.git
 运行ms_admin，可在idea中配置
 mvn tomcat7:run(可在idea中配置,目前只能用tomcat，maven-jetty-plugin 6.1.26版本不支持servlet3规范)
 
-maven环境变量配置:
+如果运行报错:-Dmaven.multiModuleProjectDirectory system propery is not set 需要maven环境变量配置:
 File -> Settings(Ctrl+Alt+S) -> Build, Execution, Deployment -> Build Tools -> Maven -> Runner 在右侧VM Options中增加:-Dmaven.multiModuleProjectDirectory=$M2_HOME
 
 

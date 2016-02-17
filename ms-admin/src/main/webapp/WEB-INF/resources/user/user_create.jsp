@@ -283,7 +283,6 @@
                 else error.insertAfter(element);
             },
             submitHandler: function (form) {
-                alert("submitted");
                 form.submit();
             },
             invalidHandler: function (form) {
