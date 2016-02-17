@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         version="3.0">
+
+    <!-- ==================================================================
+         Context parameters
+         ================================================================== -->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:spring/spring-root.xml</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>log4jConfigLocation</param-name>
+        <param-value>classpath:log4j.properties</param-value>
+    </context-param>
+
+
+    <!-- ==================================================================
+         Servlet listeners
+         ================================================================== -->
+    <!-- TODO 确定是否需要 IntrospectorCleanupListener
+    Note that this listener is <i>not</i> necessary when using Spring's beans
+ * infrastructure within the application, as Spring's own introspection results
+ * cache will immediately flush an analyzed class from the JavaBeans Introspector
+ * cache and only hold a cache within the application's own ClassLoader.
+ -->
+    <listener>
+        <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+    </listener>
+    <listener>
+        <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+    </listener>
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+    <!-- ==================================================================
+         Filters
+         ================================================================== -->
+    <filter>
+        <filter-name>encodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>forceEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>encodingFilter</filter-name>
+        <url-pattern>*.action</url-pattern>
+    </filter-mapping>
+
+    <!-- Shiro Filter is defined in the spring application context: -->
+    <filter>
+        <filter-name>shiroFilter</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+        <!--
+            默认的targetBeanName就是filter的名字，此处可以不需要(因为spring中定义的filter的名字也是shiroFilter)，此处仅作为研究代码使用
+                if (this.targetBeanName == null) {
+					this.targetBeanName = getFilterName();
+				}
+        -->
+        <init-param>
+            <param-name>targetBeanName</param-name>
+            <param-value>shiroFilter</param-value>
+        </init-param>
+        <init-param>
+            <param-name>targetFilterLifecycle</param-name>
+            <param-value>true</param-value>
+        </init-param>
+
+    </filter>
+    <filter-mapping>
+        <filter-name>shiroFilter</filter-name>
+        <url-pattern>*.action</url-pattern>
+    </filter-mapping>
+
+    <!-- ==================================================================
+         Servlets
+         ================================================================== -->
+    <servlet>
+        <servlet-name>springmvc</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <!--
+                此处也可以不用配置contextConfigLocation，如果不配置，根据规则会自动查找/WEB-INF/springmvc-servlet.xml
+                The default namespace is "'servlet-name'-servlet", e.g. "test-servlet" for a servlet-name "test" (leading to a "/WEB-INF/test-servlet.xml" default location with XmlWebApplicationContext).
+                The namespace can also be set explicitly via the "namespace" servlet init-param.
+            -->
+            <param-name>contextConfigLocation</param-name>
+            <param-value>/WEB-INF/springmvc-servlet.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>springmvc</servlet-name>
+        <url-pattern>*.action</url-pattern>
+    </servlet-mapping>
+
+
+    <!-- ==================================================================
+         Welcome file list
+         ================================================================== -->
+    <welcome-file-list>
+        <welcome-file>/index.action</welcome-file>
+    </welcome-file-list>
+
+</web-app>
