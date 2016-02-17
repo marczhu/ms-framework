@@ -49,7 +49,7 @@ public class LoginController {
         UsernamePasswordToken token = new UsernamePasswordToken(user.getLoginName(), user.getPassword());
         try {
             SecurityUtils.getSubject().login(token);
-            SecurityUtils.getSubject().getSession().setAttribute("user",user);
+            SecurityUtils.getSubject().getSession().setAttribute("user", user);
         } catch (UnknownAccountException uae) {
             builder.error("There is no user with username of " + token.getPrincipal());
         } catch (IncorrectCredentialsException ice) {
