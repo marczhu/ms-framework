@@ -105,6 +105,7 @@ public class UserController {
                                  @RequestParam(value = "sort", defaultValue = "create_time", required = false) String sortProperty, final User condition) throws SystemException {
         Page<User> page;
         try {
+
             page = userService.getListPage(new PageRequest(pageno, size, new Sort(direction, sortProperty)), condition);
         } catch (Throwable throwable) {
             LOGGER.error(String.format(SystemException.UnknownException.LOG_MESSAGE_PREFIX + "获取数据异常"), throwable);
