@@ -64,6 +64,7 @@
             <name>libs-snapshot</name>
             <url>http://10.135.6.66:8081/artifactory/libs-snapshot</url>
         </repository>
+        
         <repository>
             <snapshots/>
             <id>libs-snapshot-local</id>
