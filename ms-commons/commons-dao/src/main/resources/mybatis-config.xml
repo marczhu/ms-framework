@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+    <settings>
+        <!-- changes from the defaults -->
+        <setting name="lazyLoadingEnabled" value="false" />
+    </settings>
+    
+    <typeAliases>
+        <!-- security -->
+        <typeAlias alias="User" type="com.ms.framework.domain.account.User" />
+        <typeAlias alias="Role" type="com.ms.framework.domain.account.Role" />
+        <typeAlias alias="UserRole" type="com.ms.framework.domain.account.UserRole" />
+        <typeAlias alias="Permission" type="com.ms.framework.domain.account.Permission" />
+        <typeAlias alias="RolePermission" type="com.ms.framework.domain.account.RolePermission" />
+
+	</typeAliases>
+
+    <!-- 分页 plugins-->
+    <plugins>
+        <plugin interceptor="com.ms.framework.dao.core.paging.MysqlPagingAndSortingInterceptor">
+            <property name="targetSqlIdPattern" value=".*Page$"/>
+        </plugin>
+    </plugins>
+</configuration>

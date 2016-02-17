@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ms.framework.dao.account.PermissionDao">
+    <resultMap id="PermissionMap" type="Permission">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="type" column="type" jdbcType="INTEGER"/>
+        <result property="resourceId" column="resource_id" jdbcType="VARCHAR"/>
+        <result property="expression" column="expression" jdbcType="VARCHAR"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="lastUpdateTime" column="last_update_time" jdbcType="TIMESTAMP"/>
+        <result property="deleted" column="deleted" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="INSERT_COLUMNS">type,resource_id,expression,remark,create_time,last_update_time,deleted</sql>
+    <sql id="ALL_COLUMNS">id,type,resource_id,expression,remark,create_time,last_update_time,deleted</sql>
+
+    <insert id="insert" parameterType="Permission" useGeneratedKeys="true" keyProperty="id">
+            insert into t_permission
+            (<include refid="INSERT_COLUMNS"/>)
+            values
+            (#{type},#{resourceId},#{expression},#{remark},sysdate(),sysdate(),#{deleted});
+    </insert>
+
+    <update id="update" parameterType="Permission">
+        update t_permission
+        <set>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="resourceId != null">
+                resource_id = #{resourceId},
+            </if>
+            <if test="expression != null">
+                expression = #{expression},
+            </if>
+            <if test="remark != null">
+                remark = #{remark},
+            </if>
+            <if test="deleted != null">
+                deleted = #{deleted},
+            </if>
+            last_update_time = sysdate(),
+        </set>
+        where id= #{id}
+    </update>
+
+    <delete id="delete" parameterType="long">
+        <![CDATA[ delete from t_permission where id = #{id} ]]>
+    </delete>
+
+    <select id="getById" parameterType="long" resultMap="PermissionMap">
+        select
+            <include refid="ALL_COLUMNS"/>
+        from t_permission
+        where
+            id = #{id}
+    </select>
+
+    <select id="permissionsQuery" parameterType="long" resultMap="PermissionMap">
+        select
+            p.type,p.resource_id,p.expression
+        from t_permission p
+        where
+            p.id in(
+                select rp.permission_id from t_roles_permissions rp where rp.role_id in(select  ur.id from t_users_roles ur where ur.user_id=#{userId})
+            )
+    </select>
+
+    <select id="get" parameterType="Permission" resultMap="PermissionMap">
+        select
+            <include refid="ALL_COLUMNS"/>
+        from t_permission
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="resourceId != null">
+                resource_id = #{resourceId},
+            </if>
+            <if test="expression != null">
+                expression = #{expression},
+            </if>
+        </where>
+    </select>
+
+    <select id="getList" parameterType="Permission" resultMap="PermissionMap">
+        select
+        <include refid="ALL_COLUMNS"/>
+        from t_permission
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="resourceId != null">
+                resource_id = #{resourceId},
+            </if>
+            <if test="expression != null">
+                expression = #{expression},
+            </if>
+        </where>
+            order by id desc
+    </select>
+
+    <select id="getCount" parameterType="Permission" resultType="long">
+        select count(1) from t_permission
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="resourceId != null">
+                resource_id = #{resourceId},
+            </if>
+            <if test="expression != null">
+                expression = #{expression},
+            </if>
+        </where>
+    </select>
+
+</mapper>

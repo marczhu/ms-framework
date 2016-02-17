@@ -3,22 +3,18 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>com.ms.framework</groupId>
-        <artifactId>ms_parent</artifactId>
-        <version>1.0-SNAPSHOT</version>
-        <relativePath>./ms_parent/pom.xml</relativePath>
-    </parent>
 
-    <artifactId>ms_framework</artifactId>
+    <groupId>com.ms.framework</groupId>
+    <artifactId>ms-framework</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
     <name>micro 、simple、 smart development framework</name>
 
     <modules>
-        <module>ms_parent</module>
-        <module>ms_admin</module>
-        <module>ms_web</module>
+        <module>ms-parent</module>
+        <module>ms-admin</module>
+        <module>ms-commons</module>
+        <module>ms-mdd-schemas</module>
     </modules>
 
 </project>

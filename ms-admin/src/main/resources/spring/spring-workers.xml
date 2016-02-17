@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- Sample RDBMS data source that would exist in any application - not Shiro related. -->
+    <bean id="sqlScriptInitializer" class="com.ms.admin.init.sql.SqlScriptInitializer">
+        <constructor-arg index="0" ref="dataSource"/>
+        <property name="locations">
+            <list>
+                <value>sql/schema.sql</value>
+                <value>sql/data.sql</value>
+            </list>
+        </property>
+    </bean>
+
+</beans>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ms.framework.dao.account.UserDao">
+    <resultMap id="UserMap" type="User">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="loginName" column="login_name" jdbcType="VARCHAR"/>
+        <result property="email" column="email" jdbcType="VARCHAR"/>
+        <result property="mobile" column="mobile" jdbcType="VARCHAR"/>
+        <result property="password" column="password" jdbcType="VARCHAR"/>
+        <result property="salt" column="salt" jdbcType="VARCHAR"/>
+        <result property="status" column="status" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="lastUpdateTime" column="last_update_time" jdbcType="TIMESTAMP"/>
+        <result property="deleted" column="deleted" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="INSERT_COLUMNS">login_name,email,mobile,password,salt,status,create_time,last_update_time,deleted</sql>
+    <sql id="ALL_COLUMNS">id,login_name,email,mobile,password,salt,status,create_time,last_update_time,deleted</sql>
+
+    <insert id="insert" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+        insert into t_user
+        (<include refid="INSERT_COLUMNS"/>)
+        values
+        (#{loginName},#{email},#{mobile},#{password},#{salt},#{status},sysdate(),sysdate(),#{deleted});
+    </insert>
+
+    <update id="update" parameterType="User">
+        update t_user
+        <set>
+            <if test="loginName != null">
+                login_name = #{loginName},
+            </if>
+            <if test="email != null">
+                email = #{email},
+            </if>
+            <if test="mobile != null">
+                mobile = #{mobile},
+            </if>
+            <if test="password != null">
+                password = #{password},
+            </if>
+            <if test="salt != null">
+                salt = #{salt},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="deleted != null">
+                deleted = #{deleted},
+            </if>
+            last_update_time = sysdate(),
+        </set>
+        where id= #{id}
+    </update>
+
+    <delete id="delete" parameterType="long">
+        <![CDATA[ delete from t_user where id = #{id} ]]>
+    </delete>
+
+    <select id="getById" parameterType="long" resultMap="UserMap">
+        select
+            <include refid="ALL_COLUMNS"/>
+        from t_user
+        where
+            id = #{id}
+    </select>
+
+    <select id="searchByLoginName" parameterType="String" resultMap="UserMap">
+        select
+            id,login_name,password,salt,status
+        from t_user
+        where
+            login_name=#{loginName}
+    </select>
+
+    <select id="get" parameterType="User" resultMap="UserMap">
+        select
+            <include refid="ALL_COLUMNS"/>
+        from t_user
+        <where>
+            <if test="id != null and id !=0">
+                and id = #{id}
+            </if>
+            <if test="loginName != null">
+                and login_name = #{loginName}
+            </if>
+            <if test="password != null">
+                and password = #{password}
+            </if>
+        </where>
+    </select>
+
+    <select id="getList" parameterType="User" resultMap="UserMap">
+        select
+            <include refid="ALL_COLUMNS"/>
+        from t_user
+        <where>
+            <if test="id != null and id !=0">
+                and id = #{id}
+            </if>
+            <if test="loginName != null">
+                and login_name = #{loginName}
+            </if>
+            <if test="password != null">
+                and password = #{password}
+            </if>
+        </where>
+        order by id desc
+    </select>
+
+    <select id="getListPage" parameterType="User" resultMap="UserMap">
+        select
+        <include refid="ALL_COLUMNS"/>
+        from t_user
+        <where>
+            <if test="id != null and id !=0">
+                and id = #{id}
+            </if>
+            <if test="loginName != null">
+                and login_name = #{loginName}
+            </if>
+            <if test="password != null">
+                and password = #{password}
+            </if>
+        </where>
+        order by id desc
+    </select>
+
+    <select id="getCount" parameterType="User" resultType="long">
+        select count(1) from t_user
+        <where>
+            <if test="id != null and id !=0">
+                and id = #{id}
+            </if>
+            <if test="loginName != null">
+                and login_name = #{loginName}
+            </if>
+            <if test="password != null">
+                and password = #{password}
+            </if>
+        </where>
+    </select>
+
+</mapper>

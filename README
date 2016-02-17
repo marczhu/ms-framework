@@ -1,0 +1,105 @@
+1.完成测试用例
+3.完成dao层开发
+4.最好能完成登陆开发
+2.参考org.springframework.boot.autoconfigure.jdbc.DataSourceInitializer，可配置初始化不同的schema和data，满足开发和单元测试时使用本地embedded数据库需要
+
+
+TODO
+1.authorized
+2.remember me UsernamePasswordToken
+3.集成cache
+4.cookie加密 cookie中存储密文(服务器端提供加密方法返回给浏览器)
+data.sql执行成功后数据库里仍然没有数据??????????貌似数据回滚了，怀疑跟h2数据库特性有关，一个连接一个实例?不共享数据？可以改为tcp试试
+研究plugin：ibatis的plugin、MQ的plugin、SPI 2天时间,2.17 - 2.18 文字总结
+========================================================
+cookie、验证码
+用户管理
+菜单权限
+
+
+单点登陆
+集成cache
+remember Me
+
+前端商城
+=========================================================
+进一步研究shiro，doGetAuthenticationInfo.doGetAuthenticationInfo()貌似只是为了获取数据库的password，salt信息，验证密码是在哪里实现的？跟踪代码，查看是在哪里验证密码的getSubject().login(token)
+
+认证是在AuthenticatingRealm中实现的，调用AuthenticatingRealm.getAuthenticationInfo(AuthenticationToken token)，返回AuthenticationInfo
+AuthenticatingRealm 从Cache中获取，如果Cache中没有，则调用JdbcRealm.doGetAuthenticationInfo()获取
+
+研究inner join、outer join、 left join、right join----------------------
+in转换成exist------------------
+
+idea的sql编辑器很好用，如果里面有schema脚本则会自动带出数据库字段，速度很快
+索引
+外键
+字段长度服务器端校验
+
+页面局部引用:
+
+<%@ include file="b.jsp"%>
+    静态include，只能引入静态文件(jsp、inc等)
+    jsp的include指令元素读入指定的内容,并把这些内容和原来的页面融合到一起。可以理解为纯粹是把代码写在外面的一种共享方法,所有的变量都是可以和include它的主文件共享, 两者高度紧密结合,不能有变量同名的冲突.
+    用户访问a.jsp时，其实是访问web容器将a.jsp生成的servletA，静态include是在web容器将a.jsp成servlet时，先将include的内容合并到当前jsp，然后整体转化成servletA
+    通俗的说法:静态引入是把b.jsp的源码拼接到a.jsp中，在一块编译，这样两者代码是加到一起的
+
+<jsp:include page="b.jsp" flush="true"/>
+     动态include，可以引入动态url(.do、.action)，并且可以带参数
+     引入执行页面或servlet所生成的应答文本.通俗点说就是附加这个要导入文件经过编译后的效果
+     用户访问a.jsp时，访问到servletA，在servletA执行时，先请求b.jsp转化后的servletB，并将servletB执行后的文本合并到当前的servletA中
+     通俗的说法:动态引入是分开编译两个jsp，把行成的html再加到一起
+
+<jsp:include page="${request.contextPath}/left_menu.action"/>
+
+<c:import url="">
+    通过开发者工具查看，没有发现新的url请求，应该是类似于<jsp:include/>是同步的,在服务器端处理完成后返回给客户端。<c:import/>功能很强大,可以使用动态url,可以传递参数，并且还可以引入外部url的内容
+    <c:import>标签提供了所有<jsp:include>行为标签所具有的功能，同时也允许包含绝对URL。
+    举例来说，使用<c:import>标签可以包含一个FTP服务器中不同的网页内容。
+
+jquery.load(url) 异步执行，url无法引用父页面中的js
+
+左侧菜单引入:
+    由于是动态内容，不可以使用<%@ include file=""%>，可使用以下三种引入方式，其中：jsp:include 和 c:import是同步执行，jquery.load()是异步执行，并且jquery.load()不可以使用父页面的js，这种情况下js需要分得很细
+
+    <jsp:include page="${request.contextPath}/left_menu.action"/>
+
+	<c:catch var="exception">
+		<c:import url="${request.contextPath}/left_menu.action" />
+	</c:catch>
+	<c:if test="${not empty exception}">
+		Sorry, the remote content is not currently available.
+	</c:if>
+
+    $(function() {
+		$("#sidebar").load("${request.contextPath}/left_menu.action");
+    })
+
+    前端参考
+    http://fortawesome.github.io/Font-Awesome/examples/
+
+    //secure只有https才有用
+    $.cookie('the_cookie', 'the_value1', {expires: 7, path: '/', secure: true});
+
+    在使用tomcat7-maven-plugin配置SSL时，报错：java.security.UnrecoverableKeyException: Cannot recover key，解决办法是keypass和storepass设置成一致的
+       <plugin>
+    		<groupId>org.apache.tomcat.maven</groupId>
+    		<artifactId>tomcat7-maven-plugin</artifactId>
+    		<version>${tomcat.maven.plugin}</version>
+    		<configuration>
+    			<port>8080</port>
+    			<path>/</path>
+    			<uriEncoding>UTF-8</uriEncoding>
+    			<server>tomcat7</server>
+    			<httpsPort>8443</httpsPort>
+    			<keystoreFile>E:\keytool\tomcatserver.jks</keystoreFile>
+    			<keystorePass>keystorepass</keystorePass>
+    		</configuration>
+    	</plugin>
+
+AES cookie加密
+加密算法：
+http://blog.csdn.net/kongqz/article/category/800296
+系统设计时，涉及系统均增加ping接口，用于监控依赖方的服务进程是否存在，也需要对特定服务是否开启进行监控
+
+favicon.ico

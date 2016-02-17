@@ -1,0 +1,2 @@
+drop table if exists user_account1;
+create table user_account1 (id bigint not null auto_increment, create_time datetime not null, email varchar(255), last_update_time datetime not null, login_name varchar(255) not null, mobile varchar(255), password varchar(255) not null, salt varchar(255), primary key (id)) ENGINE=InnoDB;

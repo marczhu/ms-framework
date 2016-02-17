@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ms.framework.dao.account.RoleDao">
+    <resultMap id="RoleMap" type="Role">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="lastUpdateTime" column="last_update_time" jdbcType="TIMESTAMP"/>
+        <result property="deleted" column="deleted" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="INSERT_COLUMNS">name,remark,create_time,last_update_time,deleted</sql>
+    <sql id="ALL_COLUMNS">id,name,remark,create_time,last_update_time,deleted</sql>
+
+    <insert id="insert" parameterType="Role" useGeneratedKeys="true" keyProperty="id">
+            insert into t_role
+            (<include refid="INSERT_COLUMNS"/>)
+            values
+            (#{name},#{remark},sysdate(),sysdate(),#{deleted});
+    </insert>
+
+    <update id="update" parameterType="Role">
+        update t_role
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="remark != null">
+                remark = #{remark},
+            </if>
+            <if test="deleted != null">
+                deleted = #{deleted},
+            </if>
+            last_update_time = sysdate(),
+        </set>
+        where id= #{id}
+    </update>
+
+    <delete id="delete" parameterType="long">
+        <![CDATA[ delete from t_role where id = #{id} ]]>
+    </delete>
+
+    <select id="getById" parameterType="long" resultMap="RoleMap">
+        select
+            <include refid="ALL_COLUMNS"/>
+        from t_role
+        where
+            id = #{id}
+    </select>
+
+    <select id="rolesQuery" parameterType="long" resultMap="RoleMap">
+        select
+            r.id,r.name
+        from
+            scf.t_users_roles ur
+        inner join t_role r on ur.role_id = r.id
+        where ur.user_id=#{userId}
+    </select>
+
+    <select id="get" parameterType="Role" resultMap="RoleMap">
+        select
+            <include refid="ALL_COLUMNS"/>
+        from t_role
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="name != null">
+                and name = #{name}
+            </if>
+        </where>
+    </select>
+
+    <select id="getList" parameterType="Role" resultMap="RoleMap">
+        select
+        <include refid="ALL_COLUMNS"/>
+        from t_role
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="name != null">
+                and name = #{name}
+            </if>
+        </where>
+            order by id desc
+    </select>
+
+    <select id="getCount" parameterType="Role" resultType="long">
+        select count(1) from t_role
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="name != null">
+                and name = #{name}
+            </if>
+        </where>
+    </select>
+
+</mapper>
