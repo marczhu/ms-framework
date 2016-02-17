@@ -5,4 +5,5 @@ package com.ms.admin.alarm;
  */
 public interface AlarmEvent {
 
+
 }
