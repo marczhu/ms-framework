@@ -51,6 +51,8 @@ public abstract class AbstractPagingInterceptor implements Interceptor {
 
     protected static final String UNION = "union";
 
+    protected static final String LIMIT = " limit ";
+
 
     @Override
     public Object intercept(Invocation invocation) throws Throwable {

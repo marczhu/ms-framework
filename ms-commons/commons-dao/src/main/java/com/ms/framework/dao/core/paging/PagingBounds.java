@@ -25,22 +25,21 @@ public class PagingBounds extends RowBounds {
     }
 
     public PagingBounds(int offset, int limit, boolean needGetTotal) {
-        super(offset, limit);
-        this.needGetTotal = needGetTotal;
+        this(offset, limit, needGetTotal, null);
     }
 
     public PagingBounds(int offset, int limit, boolean needGetTotal, SortEntity sortEntity) {
-        super(offset, limit);
+        this.offset = offset;
+        this.limit = limit;
         this.needGetTotal = needGetTotal;
         this.sortEntity = sortEntity;
     }
 
-    public void setToDefault() {
-        this.offset = NO_ROW_OFFSET;
-        this.limit = NO_ROW_LIMIT;
+    public static PagingBounds createPagingBounds(Pageable pageable) {
+        return createPagingBounds(pageable, NEED_GET_TOTAL_DEFAULT);
     }
 
-    public static PagingBounds createPagingBounds(Pageable pageable) {
+    public static PagingBounds createPagingBounds(Pageable pageable, boolean needGetTotal) {
         Sort.Order order = null;
         Iterator<Sort.Order> it = pageable.getSort().iterator();
         //获取第一个,只支持一个order属性
@@ -48,10 +47,15 @@ public class PagingBounds extends RowBounds {
             order = it.next();
         }
         if (order != null) {
-            return new PagingBounds(pageable.getOffset(), pageable.getPageSize(), NEED_GET_TOTAL_DEFAULT, new PagingBounds.SortEntity(order.getProperty(), order.getDirection()));
+            return new PagingBounds(pageable.getOffset(), pageable.getPageSize(), needGetTotal, new PagingBounds.SortEntity(order.getProperty(), order.getDirection()));
         } else {
             return new PagingBounds(pageable.getOffset(), pageable.getPageSize());
         }
+    }
+
+    public void setToDefault() {
+        this.offset = NO_ROW_OFFSET;
+        this.limit = NO_ROW_LIMIT;
     }
 
     public int getSelectCount() {
@@ -64,6 +68,16 @@ public class PagingBounds extends RowBounds {
 
     public int getTotal() {
         return total;
+    }
+
+    @Override
+    public int getOffset() {
+        return offset;
+    }
+
+    @Override
+    public int getLimit() {
+        return limit;
     }
 
     public boolean isNeedGetTotal() {

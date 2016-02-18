@@ -31,7 +31,7 @@ public class MysqlPagingAndSortingInterceptor extends AbstractPagingInterceptor 
             replaceOrder(pagingBounds.getSortEntity(),sqlBuilder);
         }
 
-        sqlBuilder.append(" limit ");
+        sqlBuilder.append(LIMIT);
         sqlBuilder.append(pagingBounds.getOffset());
         sqlBuilder.append(",");
         sqlBuilder.append(pagingBounds.getLimit());
@@ -55,6 +55,6 @@ public class MysqlPagingAndSortingInterceptor extends AbstractPagingInterceptor 
     }
 
     private void appendSort(PagingBounds.SortEntity sortEntity, StringBuilder sqlBuilder) {
-        sqlBuilder.append("order by ").append(sortEntity.getOrderProperty()).append(" ").append(sortEntity.getDirection().name());
+        sqlBuilder.append("order by ").append(sortEntity.getOrderProperty()).append(" ").append(sortEntity.getDirection().name().toLowerCase());
     }
 }
