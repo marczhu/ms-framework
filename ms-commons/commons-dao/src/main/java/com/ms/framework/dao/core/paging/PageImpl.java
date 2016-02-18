@@ -37,7 +37,7 @@ public class PageImpl<T> extends org.springframework.data.domain.PageImpl<T> {
 
     @Override
     public String toString() {
-        return super.toString() + MoreObjects.toStringHelper(this)
+        return super.toString() + "|" + MoreObjects.toStringHelper(this)
                 .add("totalPages", this.getTotalPages())
                 .add("number", this.getNumber())
                 .add("size", this.getSize())
