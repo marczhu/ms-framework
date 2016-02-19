@@ -9,7 +9,7 @@ import org.springframework.util.StringUtils;
 import java.util.Iterator;
 
 /**
- * 扩展total和sort,只支持一个order属性
+ * 扩展total和sort,只支持一个order字段
  * Created by mark.zhu on 2016/2/15.
  */
 public class PagingBounds extends RowBounds {
