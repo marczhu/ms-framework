@@ -61,7 +61,7 @@
 
         <div id="page-content" class="clearfix">
             <div class="page-header position-relative">
-                <h1>Typography <small><i class="icon-double-angle-right"></i> This is page-header (.page-header &gt; h1)</small></h1>
+                <h1>用户管理 <small><i class="icon-double-angle-right"></i> 新用户</small></h1>
             </div>
 
             <div class="row-fluid">
