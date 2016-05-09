@@ -293,6 +293,12 @@
         $('#reset').click(function (){
             validator.resetForm();
         });
+
+        $(document).keyup(function (event) {
+            if (event.keyCode == 13) {
+                $("button[type=submit]").trigger("click");
+            }
+        });
     });
 </script>
 </body>

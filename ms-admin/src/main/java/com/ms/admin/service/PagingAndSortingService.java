@@ -3,6 +3,8 @@ package com.ms.admin.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Map;
+
 /**
  * provide additional methods to retrieve entities using the pagination and
  * sorting abstraction.
@@ -17,5 +19,5 @@ public interface PagingAndSortingService<T> {
      * @param condition
      * @return a page of entities
      */
-    Page<T> getListPage(Pageable pageable,T condition) throws Exception;
+    Page<T> getListPage(Pageable pageable,Map<String,Object> condition) throws Exception;
 }

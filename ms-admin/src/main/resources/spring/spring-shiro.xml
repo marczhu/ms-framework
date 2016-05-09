@@ -113,7 +113,12 @@
                 /user/do_create.action = anon
                 /user/is_valid_login_name.action = anon
                 /user/list.action = anon
-                /user/list_page.action = anon
+                /user/list_async.action = anon
+                /user/list_async_data.action = anon
+                /user/update.action = anon
+                /user/do_update.action = anon
+                /user/do_update_async.action = anon
+                /user/delete.action = anon
 
                 # allow WebStart to pull the jars for the swing app:
                 /*.jar = anon

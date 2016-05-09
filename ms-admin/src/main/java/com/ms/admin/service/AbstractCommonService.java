@@ -4,10 +4,13 @@ import com.ms.framework.dao.SimpleCommonDao;
 import com.ms.framework.dao.core.paging.PageImpl;
 import com.ms.framework.dao.core.paging.PagingBounds;
 import com.ms.framework.domain.BaseDomain;
+import com.ms.framework.domain.account.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -40,7 +43,7 @@ public abstract class AbstractCommonService<D extends SimpleCommonDao<T>, T exte
     }
 
     @Override
-    public Page<T> getListPage(Pageable pageable, T condition) throws Exception {
+    public Page<T> getListPage(Pageable pageable, Map<String,Object> condition) throws Exception {
         if (pageable == null) {
             throw new IllegalArgumentException("no page parameters found!");
         }

@@ -18,7 +18,7 @@ public class UserValidator implements Validator {
     @Override
     public void validate(Object o, Errors errors) {
         if (o == null){
-            errors.rejectValue("errMsg", "userAccount.invalid", "UserAccount is null");
+            errors.rejectValue("errMsg", "userAccount.invalid", "User is null");
             return;
         }
         User target = (User)o;

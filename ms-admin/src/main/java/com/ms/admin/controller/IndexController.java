@@ -38,8 +38,8 @@ public class IndexController {
         return new ModelAndView(TOP_NAV_PAGE);
     }
 
-    @RequestMapping("/unknow_exception")
-    public ModelAndView unknowException(final String message, final String redirectUrl) {
+    @RequestMapping("/unknown_exception")
+    public ModelAndView unknownException(final String message, final String redirectUrl) {
         Map<String, String> paramsMap = new HashMap<>();
         paramsMap.put("message", message);
         paramsMap.put("url", redirectUrl);

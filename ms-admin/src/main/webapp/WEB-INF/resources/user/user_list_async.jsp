@@ -72,7 +72,7 @@
 
             <div class="row-fluid">
                 <div class="row-fluid">
-                    <form id="search-form" class="form-search" action="${request.contextPath}/user/list.action" method="post">
+                    <form id="search-form" class="form-search" method="post">
                         <input id="pageno" type="hidden" name="pageno" value="${page.number}"/>
                         <input id="size" type="hidden" name="size" value="${page.size}"/>
                         <input type="hidden" name="direction" value="${page.sortOrder == null ? "":page.sortOrder.direction}"/>
@@ -123,7 +123,7 @@
                                         <input type="text" id="status" name="status" class="input-medium search-query" value="${user.status == 0 ? null:user.status}"/>
                                     </td>
                                     <td colspan="2">
-                                        <button id="search-form-submit" type="submit" class="btn btn-purple btn-small"><i class="icon-search icon-on-right"></i>查询</button>
+                                        <button type="submit" id="search-form-submit" class="btn btn-purple btn-small"><i class="icon-search icon-on-right"></i>查询</button>
                                         &nbsp; &nbsp; &nbsp;
                                         <button type="reset" class="btn btn-info btn-small"><i class="icon-undo"></i>重置</button>
                                     </td>
@@ -133,67 +133,13 @@
                     </form>
                     <hr/>
                 </div>
+
                 <div class="row-fluid">
                     <div id="table_report_wrapper" class="dataTables_wrapper" role="grid">
-                        <table class="table table-striped table-bordered table-hover">
-                            <thead>
-                            <tr>
-                                <th class="center">
-                                    <label><input type="checkbox"/><span class="lbl"></span></label>
-                                </th>
-                                <th>登录名</th>
-                                <th>Email</th>
-                                <th class="hidden-480">手机号</th>
-                                <th class="hidden-phone"><i class="icon-time hidden-phone"></i> 创建时间</th>
-                                <th class="hidden-480">状态</th>
-                                <th></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <c:if test="${page != null && page.content != null}">
-                                <c:forEach var="user" items="${page.content}">
-                             <tr>
-                                <td class='center'>
-                                    <label><input type='checkbox'/><span class="lbl"></span></label>
-                                </td>
-                                <td><a href='#'>${user.loginName}</a></td>
-                                <td>${user.email}</td>
-                                <td class='hidden-480'>${user.mobile}</td>
-                                <td class='hidden-phone'><fmt:formatDate value="${user.createTime}" pattern="yyyy-MM-dd"/></td>
-                                <td class='hidden-480'>
-                                    <c:choose>
-                                        <c:when test="${user.status==1}">
-                                            <span class='label label-warning'>未初始化</span>
-                                        </c:when>
-                                        <c:when test="${user.status==2}">
-                                            <span class='label label-success'>正常</span>
-                                        </c:when>
-                                        <c:when test="${user.status==20}">
-                                            <span class='label label-inverse arrowed-in'>已锁定</span>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <span class='label label-info arrowed arrowed-right'>其他</span>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </td>
-                                <td>
-                                    <div class='hidden-phone visible-desktop btn-group'>
-                                        <button class='btn btn-mini btn-success'><i class='icon-ok'></i></button>
-                                        <button class='btn btn-mini btn-info' data-toggle="modal" data-target="#update-user-modal-box" href="${request.contextPath}/user/update.action?id=${user.id}"><i class='icon-edit'></i></button>
-                                        <button class='btn btn-mini btn-danger' id="bootbox-confirm" onclick="doDelete(this,${user.id})"><i class='icon-trash'></i></button>
-                                        <button class='btn btn-mini btn-warning'><i class='icon-flag'></i></button>
-                                    </div>
-                                </td>
-                             </tr>
-                                </c:forEach>
-                            </c:if>
-                            </tbody>
-                        </table>
+
                     </div>
                 </div>
-                <div class="row-fluid">
-                    <%@include file="../pager.jsp"%>
-                </div>
+
                 <div class="row-fluid">
                     <div class="login-container">
                         <div class="position-relative">
@@ -292,7 +238,7 @@
             errorElement: "span",
             errorClass:"error-msg",
             submitHandler: function (form) {
-                form.submit();
+                loadData();
             },
             invalidHandler: function (form) {
             }
@@ -302,10 +248,32 @@
         $('#reset').click(function (){
             validator.resetForm();
         });
-
-        $("#page_size").val($("#size").val());
     });
 
+    $(function (){
+        //初始化加载数据
+        loadData();
+    });
+
+    function loadData(){
+        $.ajax({
+            url: "${request.contextPath}/user/list_async_data.action",
+            timeout:10000,
+            type: "POST",
+            data: $("#search-form").serialize(),
+            success: function(data){
+                $("#table_report_wrapper").html(data);
+                $("#page_size").val($("#size").val());
+            },
+            error: function (data) {
+                alert('系统内部错误，请稍后再试！');
+                if(typeof(console)!='undefined'){
+                    console.log(data);
+                    console.log(data.responseText);
+                }
+            }
+        });
+    }
     function goto(pageno){
         $("#pageno").val(pageno);
         $("#search-form-submit").trigger("click");
@@ -317,6 +285,43 @@
         $("#search-form-submit").trigger("click");
     }
 
+    function doUnLock(userId){
+        changeStatus(userId,2);
+    }
+    function doLock(userId){
+        changeStatus(userId,20);
+    }
+    function changeStatus(userId,status){
+        $.ajax({
+            url: "${request.contextPath}/user/do_update_async.action",
+            timeout:10000,
+            type: "POST",
+            async: true,
+            data: {id: userId,status:status},
+            success: function(data){
+                if (data.status != 200) {
+                    bootbox.dialog("操作失败!" + data.errors[0].message,
+                            [
+                                {
+                                    "label" : "确定!",
+                                    "class" : "btn-small btn-success",
+                                    "callback": function() {}
+                                }]
+                    );
+                } else {
+                    layer.msg('操作成功',{time: 1000});
+                    loadData();
+                }
+            },
+            error: function (data) {
+                alert('系统内部错误，请稍后再试！');
+                if(typeof(console)!='undefined'){
+                    console.log(data);
+                    console.log(data.responseText);
+                }
+            }
+        });
+    }
     function doDelete(button,userId){
         bootbox.confirm("确定删除?", function(result) {
             if(result) {
@@ -338,7 +343,20 @@
                             );
                         } else {
                             layer.msg('删除成功',{time: 1000});
-                            $(button).parent().parent().parent().remove();
+                            //TODO 如果当前页记录数(<tr>的个数)大于1，删除当前数据所在<tr>，否则重新加载上一页的数据
+                            var recordCount = $(button).parent().parent().parent().siblings().size();
+                            if(recordCount>1) {
+                                $(button).parent().parent().parent().remove();
+                            }else{
+                                var currentPageNumber = $("#pageno").val();
+                                if(currentPageNumber >= 1) {
+                                    $("#pageno").val(currentPageNumber-1);
+                                    loadData();
+                                }else{
+                                    $(button).parent().parent().parent().remove();
+                                }
+                            }
+
                         }
                     },
                     error: function (data) {

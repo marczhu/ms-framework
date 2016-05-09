@@ -140,7 +140,7 @@
     function clear_tips_classes() {
         $('#id-msg-icon').removeClass('icon-coffee green');
         $('#id-msg-text').removeClass('text-success');
-        $('#id-msg-icon').removeClass('icon-coffee orange');
+        $('#id-msg-icon').removeClass('icon-warning-sign orange');
         $('#id-msg-text').removeClass('text-warning');
         $('#id-msg-icon').removeClass('icon-warning-sign red');
         $('#id-msg-text').removeClass('text-error');
