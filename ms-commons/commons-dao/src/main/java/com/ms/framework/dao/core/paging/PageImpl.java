@@ -3,7 +3,9 @@ package com.ms.framework.dao.core.paging;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Objects;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -11,6 +13,8 @@ import java.util.List;
  * Created by mark.zhu on 2016/2/16.
  */
 public class PageImpl<T> extends org.springframework.data.domain.PageImpl<T> {
+    public static final int DEFAULT_MAX_PAGE_SIZE = 1000;
+
     public PageImpl(List<T> content, Pageable pageable, long total) {
         super(content, pageable, total);
     }
@@ -33,6 +37,23 @@ public class PageImpl<T> extends org.springframework.data.domain.PageImpl<T> {
 
     public boolean getHasNext() {
         return this.hasNext();
+    }
+
+    /**
+     * convenient method to get one order property
+     * @return
+     */
+    public Sort.Order getSortOrder() {
+        if (this.getSort() != null) {
+            Iterator<Sort.Order> it = this.getSort().iterator();
+            if (it != null && it.hasNext()) {
+                return it.next();
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
     }
 
     @Override

@@ -64,19 +64,6 @@ public class User extends BaseDomain {
         this.status = status;
     }
 
-
-    public enum UserAccountStatus{
-        VALID(1),INVALID(-1);
-        private int value;
-        private UserAccountStatus(int value){
-            this.value = value;
-        }
-
-        public int getValue() {
-            return value;
-        }
-    }
-
     @Override
     public String toString() {
         return super.toString() + MoreObjects.toStringHelper(this)

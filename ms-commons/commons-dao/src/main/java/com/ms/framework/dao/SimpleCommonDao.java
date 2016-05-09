@@ -2,8 +2,11 @@ package com.ms.framework.dao;
 
 import com.ms.framework.dao.core.paging.PagingBounds;
 import com.ms.framework.domain.BaseDomain;
+import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -67,12 +70,8 @@ public interface SimpleCommonDao<T extends BaseDomain> {
      * @return
      * @throws Exception
      */
-    List<T> getListPage(PagingBounds bounds,T condition) throws Exception;
+    List<T> getListPage(PagingBounds bounds,Map<String,Object> condition) throws Exception;
 
-    /**
-     *
-     * @param obj
-     * @return
-     */
-    long getCount(T obj);
+    long getCount(Map<String,Object> condition);
+
 }
