@@ -114,4 +114,27 @@ mvn tomcat7:run(可在idea中配置,目前只能用tomcat，maven-jetty-plugin 6
 如果运行报错:-Dmaven.multiModuleProjectDirectory system propery is not set 需要maven环境变量配置:
 File -> Settings(Ctrl+Alt+S) -> Build, Execution, Deployment -> Build Tools -> Maven -> Runner 在右侧VM Options中增加:-Dmaven.multiModuleProjectDirectory=$M2_HOME
 
+TODO
+css学习，ace以及纯bootstrap
 
+H2 Java嵌入式数据库 里面一些参数可以试试
+http://ju.outofmemory.cn/entry/80799
+
+jquery表格：datatables 和 jqgrid
+
+
+
+
+重构：
+使用guava的Preconditions
+guava Throwables
+
+
+前端
+调整好分页
+页面布局中增加create button
+页面布局使用tab，以支持同时打开多个页面
+
+新的模块使用纯bootstrap，不使用ACE
+
+防止重复提交：刷新页面 或者 多次点击提交button
